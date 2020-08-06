@@ -1,22 +1,35 @@
 #header {
     display: flex;
     margin: 30px;
+    font-size: 20px;
+    flex-direction: column;
+    text-align: right;
 }
 
 #totalCash {
-    font-size: 20px;
+    text-decoration: solid;
+    text-decoration: underline;
 }
-
 #leaderboardButton {
-        font-size: 20px;
-        position: center;
-    }  
+    font-size: 20px;
+    text-align: right;
+}  
+
+#leaderboardList {
+    text-align: left;
+}
 
 #playerName {
-    justify-content: left;
+    justify-content: flex-end;
 }
-
 
 body {
-    background-color: darkgoldenrod;
+    background-color: #29bdc1;
 }
+
+#dealerTitle {
+    text-align: center;
+    font-style: italic;
+    text-decoration: underline;
+}
+
