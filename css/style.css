@@ -1,0 +1,22 @@
+#header {
+    display: flex;
+    margin: 30px;
+}
+
+#totalCash {
+    font-size: 20px;
+}
+
+#leaderboardButton {
+        font-size: 20px;
+        position: center;
+    }  
+
+#playerName {
+    justify-content: left;
+}
+
+
+body {
+    background-color: darkgoldenrod;
+}
