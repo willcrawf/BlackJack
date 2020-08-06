@@ -12,7 +12,8 @@
 }
 #leaderboardButton {
     font-size: 20px;
-    text-align: right;
+    text-align: center;
+   
 }  
 
 #leaderboardList {
@@ -33,3 +34,11 @@ body {
     text-decoration: underline;
 }
 
+#leadAndReset {
+    display: flex;
+    justify-content: space-evenly
+}
+
+#resetButton {
+    height: 40px;
+}
