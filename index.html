@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,14 +13,28 @@
     <script defer src="js/main.js"></script>
 </head>
 
+
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="https://github.com/willcrawf/BlackJack" target="_blank">GitHub</a>
+            <a class="nav-link" href="https://bicyclecards.com/how-to-play/blackjack/" target="_blank"> How To Play</a>
+          </div>
+        </div>
+      </nav>
+
     <div class = "jumbotron">
     <nav id = leadAndReset>
-        <p id="leaderboardButton">
-            <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="leaderboardButton">
-                Leaderboard
-            </button>
-            </p>
+            <div class = "container">
+            <h1 id = "title">BLACKJACK!</h1> <img src="https://image.flaticon.com/icons/svg/1983/1983632.svg" alt = "couple of cards" height="80">
+             </div>
+            
             <div class="collapse" id="collapseExample">
             <div class="card card-body" id = "leaderboardList">
                 <ol id = "leaderboardNames">
@@ -31,13 +46,22 @@
                 </ol>
             </div>
             </div>
-        </p>
-       
-
-        <button type="button" class="btn btn-danger btn-sm" id = "resetButton">Reset</button>
-    </nav>
+            <p id="leaderboardButton">
+                <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample" id="leaderboardButton">
+                    Leaderboard
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-award-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 0l1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z"/>
+                <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"/>
+                </svg></button>
+            <button type="button" class="btn btn-danger btn-sm" id = "resetButton">Reset Game <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-arrow-repeat" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M2.854 7.146a.5.5 0 0 0-.708 0l-2 2a.5.5 0 1 0 .708.708L2.5 8.207l1.646 1.647a.5.5 0 0 0 .708-.708l-2-2zm13-1a.5.5 0 0 0-.708 0L13.5 7.793l-1.646-1.647a.5.5 0 0 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0 0-.708z"/>
+            <path fill-rule="evenodd" d="M8 3a4.995 4.995 0 0 0-4.192 2.273.5.5 0 0 1-.837-.546A6 6 0 0 1 14 8a.5.5 0 0 1-1.001 0 5 5 0 0 0-5-5zM2.5 7.5A.5.5 0 0 1 3 8a5 5 0 0 0 9.192 2.727.5.5 0 1 1 .837.546A6 6 0 0 1 2 8a.5.5 0 0 1 .501-.5z"/>
+            </svg></button>
+            </p>
+        </nav>
+        <p id = 'author'>Made by Will Crawford</p>
     </div>
-
+    
 <div id = "header">
     <h3 id = "playerName">Player: Will</h3>
     <h3 id = "totalCash">Total Cash: $<span id = cashTotal>3000</span></h3>
@@ -46,7 +70,6 @@
 <div id = "dealer">
     <h3 id = "dealerTitle">Dealer</h3>
 </div>
-
 
 </body>
 </html>

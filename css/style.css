@@ -3,7 +3,12 @@
     margin: 30px;
     font-size: 20px;
     flex-direction: column;
-    text-align: right;
+    text-align: left;
+}
+
+#title {
+    font-family: 'Staatliches';
+    font-size: 80px;
 }
 
 #totalCash {
@@ -26,6 +31,7 @@
 
 body {
     background-color: #29bdc1;
+    font-family: 'Staatliches';
 }
 
 #dealerTitle {
@@ -36,9 +42,29 @@ body {
 
 #leadAndReset {
     display: flex;
-    justify-content: space-evenly
+    justify-content: space-around;
+    align-content: center;
 }
 
 #resetButton {
     height: 40px;
 }
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+#author {
+    text-align: center;
+    font-size: 13px;
+}
+
+#resetButtonX {
+    margin: 0 0 0 10px;
+}
+
+.nav-link {
+    color: black
+}
+
