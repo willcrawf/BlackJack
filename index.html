@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="css/hover.css" rel="stylesheet" media="all">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="css/cardstarter.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
     <meta charset="UTF-8">
@@ -32,7 +35,7 @@
     <div class = "jumbotron">
     <nav id = leadAndReset>
             <div class = "container">
-            <h1 id = "title">BLACKJACK!</h1> <img src="https://image.flaticon.com/icons/svg/1983/1983632.svg" alt = "couple of cards" height="80">
+            <h1 id = "title" class = "hvr-float">BLACKJACK!</h1> <img src="https://image.flaticon.com/icons/svg/1983/1983632.svg" alt = "couple of cards" class = "hvr-float" height="80">
              </div>
             
             <div class="collapse" id="collapseExample">
@@ -65,11 +68,40 @@
 <div id = "header">
     <h3 id = "playerName">Player: Will</h3>
     <h3 id = "totalCash">Total Cash: $<span id = cashTotal>3000</span></h3>
+    <div class="card large back-red shadow" id = "deck1"></div>
 </div>
 
-<div id = "dealer">
-    <h3 id = "dealerTitle">Dealer</h3>
+
+    <div class= "titles">
+        <h3 id = "dealerTitle">Dealer</h3>
 </div>
+
+
+
+<div id = "currentScores">
+    <h3 id = "dealerTotal">Dealer Score: <span id = playerCurrentScore>14</span></h3>
+</div>
+
+<div id = "dealerDeck" class = "cards">
+    <div class="card large outline" id = "deck2"></div>
+    <div class="card large outline" id = "deck2"></div>
+</div>
+
+
+<div class = "titles">
+    <h3 id = "playerTitle">Player</h3>
+</div>
+
+<div id = "currentScores">
+<h3 id = "dealerTotal">Player Score: <span id = playerCurrentScore>18</span></h3>
+</div>
+
+<div id = "playerDeck" class = "cards">
+    <div class="card large outline" id = "deck2"></div>
+    <div class="card large outline" id = "deck2"></div>
+</div>
+
+<div id = "buttonLine"><button class="btn btn-primary" id="hitButton">Hit</button></div>
 
 </body>
 </html>

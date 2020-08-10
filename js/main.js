@@ -1,25 +1,125 @@
 //*Constant Variables
+
 let maxScore = 21;
+let deck2, deck3, deck4; //8 Decks
+
 //Put lose here after logic is figured out
 //Put win here
 let totalCash = null;
+let playerCardAmount = 0;
+const deck1 = ["dA","dQ","dK","dJ","d10","d09","d08","d07","d06","d05","d04","d03","d02","hA","hQ","hK","hJ","h10","h09","h08","h07","h06","h05","h04","h03","h02","cA","cQ","cK","cJ","c10","c09","c08","c07","c06","c05","c04","c03","c02","sA","sQ","sK","sJ","s10","s09","s08","s07","s06","s05","s04","s03","s02"];
+let dealerCardAmount = 0;
+let player = {
+    name: "Will",
+    totalCash: 3000,
+    turnNumber: 0,
+    totalCurrentScore: 0,
+    cardsSelected: [],
+    cardPicked: [],
+};
+
+let dealer = {
+    cardsSelected: [],
+    cardsPicked: [],
+}
+
+//Initialization:
+init();
+
+//Six decks combined:
+
+
+//There are EIGHT decks of cards now.
+
+
 
 
 
 //You can save highest Cash reached with WebStorage API https://www.youtube.com/watch?v=NmXEJIBsN-4
 
-
 //*Cached Elements
 let leaderboarddBtn = document.getElementById("leaderboardButton"); //Actual button
 let leaderboardList = document.getElementById("leaderboardList"); //Parent List
 let leaderboardNames = document.getElementById("leaderboardNames"); //<li>
-
 let resetBtn = document.getElementById("resetButton"); //Gets reset button
-
 totalCash = document.getElementById("cashTotal").innerHTML; //Grabs cash ammount
+let hitBtn = document.getElementById("hitButton"); //Grabs hit button
 
 
-//* Things to do: 
+//* Event Listeners
+hitBtn.addEventListener('click',hitFunction) //Listens for player to press hit and runs the hitFunction
+
+//* FUNCTIONS:
+function init(){
+
+    //Initilization functions:
+    deckRandomizer();
+}
+function deckRandomizer(){ //Randomizes 8 different decks
+    deck2 = deck1.slice(0, deck1.length)
+    deck = deck1.concat(deck2)
+    
+    deck3 = deck.slice(0, deck.length)
+    deck = deck3.concat(deck)
+    
+    deck4 = deck.slice(0, deck.length)
+    deck = deck4.concat(deck)
+    
+    var j, x, i;
+    for (i = deck.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = deck[i];
+        deck[i] = deck[j];
+        deck[j] = x;
+    }
+    return deck;
+}
+
+function hitFunction(){
+    //If player has more than 2 cards, give them one for the hit
+    if (player.turnNumber === 0){ //If player has zero cards, give them two and the dealer one and a face down.
+        for (let i = 0; i < 2; i++) { //Gets player cards
+            let randIdx = Math.floor(Math.random()*deck.length);
+            player.cardPicked = deck.splice(randIdx, 1);
+            player.cardsSelected.push(player.cardPicked)
+            console.log(player.cardsSelected)
+            //render(player.cardsSelected)
+
+        }
+        player.turnNumber += 1;
+        let randIdx = Math.floor(Math.random()*deck.length);
+        dealer.cardPicked = deck.splice(randIdx, 1);
+        dealer.cardsSelected.push(dealer.cardPicked)
+        console.log(dealer.cardsSelected)
+        //render(dealer.cardsSelected)
+    } else {
+
+    }
+
+}
+
+function render(cardPicked){
+    if (deck2.length === 1) {  // Removes outline class when first card is picked
+        deck2El.classList.remove("outline");
+    }
+    if (deck2.length > 1) {  // Removes previous picked card from deck 2 class list
+        deck2El.classList.remove(cardToRemove);
+    }
+    cardToRemove = cardPicked;  // Sets card to be removed on next click
+    deck2El.classList.add(cardPicked);  // Adds current card picked to deck 2 array
+    if (deck2.length === 26) {  // Adjusts shadow when deck gets above/below halfway full
+        deck2El.classList.add("shadow");
+        deck1El.classList.remove("shadow");
+    }
+    if (deck1.length === 0) {  // Removes card back color and adds outline when last card is picked
+        deck1El.classList.add("outline");
+        deck1El.classList.remove("back-red");
+    }
+}
+
+
+
+
 //Card deck
 //Create way to bet - needs to take off the total and also be stored to see if bet is won
 //Double down stuff
