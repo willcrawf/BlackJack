@@ -3,6 +3,7 @@
 let maxScore = 21;
 let deck2, deck3, deck4; //8 Decks
 
+
 //Put lose here after logic is figured out
 //Put win here
 let totalCash = null;
@@ -21,6 +22,7 @@ let player = {
 let dealer = {
     cardsSelected: [],
     cardsPicked: [],
+    totalCurrentScore: 0,
 }
 
 //Initialization:
@@ -55,6 +57,7 @@ function init(){
     //Initilization functions:
     deckRandomizer();
 }
+
 function deckRandomizer(){ //Randomizes 8 different decks
     deck2 = deck1.slice(0, deck1.length)
     deck = deck1.concat(deck2)
@@ -75,47 +78,71 @@ function deckRandomizer(){ //Randomizes 8 different decks
     return deck;
 }
 
-function hitFunction(){
-    //If player has more than 2 cards, give them one for the hit
+function hitFunction(){ //*NEEDS ADJUSTING
     if (player.turnNumber === 0){ //If player has zero cards, give them two and the dealer one and a face down.
         for (let i = 0; i < 2; i++) { //Gets player cards
             let randIdx = Math.floor(Math.random()*deck.length);
             player.cardPicked = deck.splice(randIdx, 1);
-            player.cardsSelected.push(player.cardPicked)
-            console.log(player.cardsSelected)
-            //render(player.cardsSelected)
-
+            player.cardsSelected.push(player.cardPicked);
         }
-        player.turnNumber += 1;
+        
+        player.turnNumber += 1; //Gives dealer one random card
         let randIdx = Math.floor(Math.random()*deck.length);
         dealer.cardPicked = deck.splice(randIdx, 1);
         dealer.cardsSelected.push(dealer.cardPicked)
-        console.log(dealer.cardsSelected)
-        //render(dealer.cardsSelected)
+
+
     } else {
+        let randIdx = Math.floor(Math.random()*deck.length);
+        player.cardPicked = deck.splice(randIdx, 1);
+        player.cardsSelected.push(player.cardPicked)
 
     }
 
 }
 
-function render(cardPicked){
-    if (deck2.length === 1) {  // Removes outline class when first card is picked
-        deck2El.classList.remove("outline");
-    }
-    if (deck2.length > 1) {  // Removes previous picked card from deck 2 class list
-        deck2El.classList.remove(cardToRemove);
-    }
-    cardToRemove = cardPicked;  // Sets card to be removed on next click
-    deck2El.classList.add(cardPicked);  // Adds current card picked to deck 2 array
-    if (deck2.length === 26) {  // Adjusts shadow when deck gets above/below halfway full
-        deck2El.classList.add("shadow");
-        deck1El.classList.remove("shadow");
-    }
-    if (deck1.length === 0) {  // Removes card back color and adds outline when last card is picked
-        deck1El.classList.add("outline");
-        deck1El.classList.remove("back-red");
-    }
+
+function scoreCalc(person){
+    for (let i = 0; i < person.cardsSelected.length; i++) {
+        if (person.cardsSelected[i].includes('K') || person.cardsSelected[i].includes('J') || person.cardsSelected[i].includes('Q') || person.cardsSelected[i].includes('10')){
+            person.totalCurrentScore += 10
+        } else if (person.cardsSelected[i].includes('2')){
+                person.totalCurrentScore += 2
+        } else if(person.cardsSelected[i].includes('3')){
+                person.totalCurrentScore += 3
+        }   else if (person.cardsSelected[i].includes('4')){
+                person.totalCurrentScore += 4
+        } else if (person.cardsSelected[i].includes('5')){
+            person.totalCurrentScore += 5
+        } else if  (person.cardsSelected[i].includes('6')){
+            person.totalCurrentScore += 6
+        } else if  (person.cardsSelected[i].includes('7')){
+            person.totalCurrentScore += 7
+        } else if  (person.cardsSelected[i].includes('8')){
+            person.totalCurrentScore += 8
+        } else if (person.cardsSelected[i].includes('9')){
+            person.totalCurrentScore += 9
+        }
+    }   
+    return person.totalCurrentScore
 }
+
+scoreCalc(player)
+console.log(scoreCalc)
+
+
+
+    
+//Push = when dealer has same value as player, don't win or lose
+//10 + ace = automatic 1.5 times win 
+//Once dealer flips second card, if 16 or under, they have to take another card, otherwise stay, if dealer busts then you win 2x. 
+//If dealer doesn't bust with 17 or over  - you have to beat the value without busting
+//When dealer and player tie = push, you get your money back
+//If one the first 
+
+
+
+
 
 
 
@@ -139,10 +166,3 @@ function render(cardPicked){
 
 
 //Card values: 2-10 are of face value. Face cards = 10, Ace = 1 or 11
-
-//Results:
-//Push = when dealer has same value as player, don't win or lose
-//10 + ace = automatic 1.5 times win 
-//Once dealer flips second card, if 16 or under, they have to take another card, otherwise stay, if dealer busts then you win 2x. 
-//If dealer doesn't bust with 17 or over  - you have to beat the value without busting
-//When dealer and player tie = push, you get your money back
