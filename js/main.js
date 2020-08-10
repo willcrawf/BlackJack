@@ -85,7 +85,7 @@ function hitFunction(){ //*NEEDS ADJUSTING
             player.cardPicked = deck.splice(randIdx, 1);
             player.cardsSelected.push(player.cardPicked);
         }
-        
+
         player.turnNumber += 1; //Gives dealer one random card
         let randIdx = Math.floor(Math.random()*deck.length);
         dealer.cardPicked = deck.splice(randIdx, 1);
@@ -127,8 +127,15 @@ function scoreCalc(person){
     return person.totalCurrentScore
 }
 
-scoreCalc(player)
-console.log(scoreCalc)
+
+//If player gets blackjack
+function checkBlackJack(){  //Add rewards
+    if (player.totalCurrentScore === 21 && dealer.totalCurrentScore !== 21) {
+        console.log("Blackjack! Automatic 1.5x win.")
+    }
+}
+
+
 
 
 
