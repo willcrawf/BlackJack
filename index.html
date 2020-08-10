@@ -101,7 +101,18 @@
     <div class="card large outline" id = "deck2"></div>
 </div>
 
-<div id = "buttonLine"><button class="btn btn-primary" id="hitButton">Hit</button></div>
+<div id = "betInput" class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">$</span>
+    </div>
+    <input type="number" aria-label="Dollar amount (with dot and two decimal places)">
+    <button class = "btn btn-dark" id="betButton">Place Bet</button>
+  </div>
+  
 
+<div id = "buttonLine">
+<div><button class="btn btn-primary" id="hitButton">Hit</button></div>
+<div><button class="btn btn-primary" id="hitButton">Stand</button></div>
+</div>
 </body>
 </html>

@@ -23,6 +23,7 @@ let dealer = {
     cardsSelected: [],
     cardsPicked: [],
     totalCurrentScore: 0,
+    loss: false;
 }
 
 //Initialization:
@@ -46,10 +47,17 @@ let leaderboardNames = document.getElementById("leaderboardNames"); //<li>
 let resetBtn = document.getElementById("resetButton"); //Gets reset button
 totalCash = document.getElementById("cashTotal").innerHTML; //Grabs cash ammount
 let hitBtn = document.getElementById("hitButton"); //Grabs hit button
+let betInput = document.getElementById("betInput");
+let betBtn = document.getElementById("betButton")
 
 
 //* Event Listeners
 hitBtn.addEventListener('click',hitFunction) //Listens for player to press hit and runs the hitFunction
+
+
+
+
+
 
 //* FUNCTIONS:
 function init(){
@@ -101,7 +109,6 @@ function hitFunction(){ //*NEEDS ADJUSTING
 
 }
 
-
 function scoreCalc(person){
     for (let i = 0; i < person.cardsSelected.length; i++) {
         if (person.cardsSelected[i].includes('K') || person.cardsSelected[i].includes('J') || person.cardsSelected[i].includes('Q') || person.cardsSelected[i].includes('10')){
@@ -127,6 +134,12 @@ function scoreCalc(person){
     return person.totalCurrentScore
 }
 
+//Bet Input function:
+function betInput(){
+    if (betInput > player.totalCash){
+        return alert("Bet must be lower than total money.")
+
+}
 
 //If player gets blackjack
 function checkBlackJack(){  //Add rewards
@@ -135,7 +148,13 @@ function checkBlackJack(){  //Add rewards
     }
 }
 
-
+function checkLoss(){
+    if (player.totalCurrentScore > 21) {
+        console.log("Player loses. You broke.")
+    } if (dealer.loss === false && player.totalCurrentScore < dealer.totalCurrentScore){
+        console.log("Player loses, dealer beat you.")
+    } 
+}
 
 
 

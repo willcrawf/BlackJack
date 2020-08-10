@@ -85,13 +85,15 @@ body {
 
 #buttonLine {
     margin-bottom: 30px;
-    display: grid;
+    display: flex;
+    flex-direction: row;
     text-align: center;
     justify-content: center;
 }
 
 #hitButton {
     height: 75px;
+    margin: 20px;
     width: 125px;
     font-size: 35px;
 }
@@ -113,6 +115,9 @@ body {
     transform: translateY(-8px);
   }
 
+#betInput {
+    justify-content: center;
+}
   @charset "UTF-8";
 .card {
   box-sizing: border-box;
