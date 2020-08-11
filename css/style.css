@@ -98,6 +98,12 @@ body {
     font-size: 35px;
 }
 
+#betButton {
+    justify-content: center;
+    font-size: 
+}
+
+
 .hvr-float {
     display: inline-block;
     vertical-align: middle;
@@ -115,9 +121,7 @@ body {
     transform: translateY(-8px);
   }
 
-#betInput {
-    justify-content: center;
-}
+
   @charset "UTF-8";
 .card {
   box-sizing: border-box;
