@@ -17,15 +17,6 @@ let dealerCardAmount = 0;
 //Initialization:
 init();
 
-//Six decks combined:
-
-
-//There are EIGHT decks of cards now.
-
-
-
-
-
 //You can save highest Cash reached with WebStorage API https://www.youtube.com/watch?v=NmXEJIBsN-4
 
 //*Cached Elements
@@ -54,6 +45,8 @@ let dealerCard2 = document.getElementById("dealerCard2");
 let playerCard1 = document.getElementById("playerCard1");
 let playerCard2 = document.getElementById("playerCard2");
 let hitAndStand = document.getElementById("buttonLine")
+
+
 
 let player = {
     name: "Will",
@@ -105,7 +98,8 @@ function deckRandomizer(){ //Randomizes 8 different decks
     return deck;
 }
 
-function hitFunction(){ //*NEEDS ADJUSTING\
+function hitFunction(){ //*NEEDS ADJUSTING//
+
 betCheck();
     hit = true;
     stand = false;
@@ -116,27 +110,32 @@ betCheck();
                 let randIdx = Math.floor(Math.random()*deck.length);
                 player.cardPicked = deck.splice(randIdx, 1);
                 player.cardsSelected.push(player.cardPicked);
-                player.turnNumber = 1
-
                 } 
             let randIdx = Math.floor(Math.random()*deck.length);
             dealer.cardPicked = deck.splice(randIdx, 1);
             dealer.cardsSelected.push(dealer.cardPicked)
-        // } else if (player.turnNumber === 1) {
-        //     dealerAction();
-        //     player.turnNumber += 1
-        //     let randIdx = Math.floor(Math.random()*deck.length);
-        //     player.cardPicked = deck.splice(randIdx, 1);
-        //     player.cardsSelected.push(player.cardPicked)
+            cardRender()
+
         } else {
             let randIdx = Math.floor(Math.random()*deck.length);
             player.cardPicked = deck.splice(randIdx, 1);
             player.cardsSelected.push(player.cardPicked)
         }
+
+    console.log(player.cardsSelected)
+    console.log(dealer.cardsSelected)
+    cardRender()
     getTotals();
     hitChecker();
+    player.turnNumber += 1
     }
 
+function cardRender(){ //*NEEDS PLAYER CARD RENDERING
+    if (player.turnNumber === 0){
+    dealerCard1.className = `card large ${dealer.cardPicked}`
+    dealerCard2.className = "card large back-red shadow" 
+    }
+}
 function standFunction(){
 hit = false;
 stand = true;
@@ -175,12 +174,19 @@ function hitChecker(){
 function getTotals() {
     playerScore = 0;
     dealerScore = 0;
+    checkHasAce();
     // This will eventually need to account for A being 1/11
     for (let i=0; i < dealer.cardsSelected.length; i++) {
         dealerScore += cardLookup(`${dealer.cardsSelected[i]}`)
+        if (dealerScore > 21 && dealer.aceCount > 0){
+            dealerScore -= 10*dealer.aceCount;
+        }
     }
     for (let i=0; i < player.cardsSelected.length; i++) {
         playerScore += cardLookup(`${player.cardsSelected[i]}`)
+        if (playerScore > 21 && player.aceCount > 0){
+            playerScore -= 10*player.aceCount;
+        }
     }
 scoreRender();
 }
@@ -236,14 +242,13 @@ function checkHasAce(){
         }
     }
     for (let i = 0; i < player.cardsSelected.length; i++){
-        if(player.cardsSelected[i] === "dA" || player.cardsSelected[i] === "hA" || dealer.cardsSelected[i] ==="cA" || dealer.cardsSelected[i] === "sA"){
-        dealer.aceCount += 1;
+        if(player.cardsSelected[i] === "dA" || player.cardsSelected[i] === "hA" || player.cardsSelected[i] ==="cA" || player.cardsSelected[i] === "sA"){
+        player.aceCount += 1;
         }
     }
-
 }
 
-//Bet Input function:
+//* needs to be fixed .. adds double actual bet amount
 function betCheck(){
 if (player.turnNumber === 0){
     if (totalCash === 0) { //If player has no money, 
@@ -261,9 +266,7 @@ if (player.turnNumber === 0){
     }
 }
 
-
 //MAKE Hit and standing in proper order
-
 function checkResults(){
 results = true;
     if (stand === true){
@@ -289,7 +292,6 @@ results = true;
         }}
     }
 
-    
 //If player gets blackjack
 function blackJack(){  //Add rewards
     totalCash += player.betAmount*1.5;
@@ -348,7 +350,6 @@ function roundReset(){ //*ADD Message render
 
 
 
-//Push = when dealer has same value as player, don't win or lose
 //10 + ace = automatic 1.5 times win 
 //Once dealer flips second card, if 16 or under, they have to take another card, otherwise stay, if dealer busts then you win 2x. 
 //If dealer doesn't bust with 17 or over  - you have to beat the value without busting
