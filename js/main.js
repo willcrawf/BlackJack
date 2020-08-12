@@ -4,6 +4,7 @@ let maxScore = 21;
 let deck2, deck3, deck4; //8 Decks
 let hit = false;
 let stand = false;
+let results = false;
 
 //Put lose here after logic is figured out
 //Put win here
@@ -73,7 +74,6 @@ let dealer = {
 
 //* Event Listeners
 hitBtn.addEventListener('click',hitFunction) //Listens for player to press hit and runs the hitFunction
-betBtn.addEventListener('click',betFunct)
 standBtn.addEventListener('click',standFunction)
 
 
@@ -105,36 +105,37 @@ function deckRandomizer(){ //Randomizes 8 different decks
     return deck;
 }
 
-function hitFunction(){ //*NEEDS ADJUSTING
-hit = true;
-stand = false;
-dealerScore = 0;
-playerScore = 0;
-     if (player.turnNumber === 0){ //If player has zero cards, give them two and the dealer one and a face down.
-        for (let i = 0; i < 2; i++) { //Gets player cards
+function hitFunction(){ //*NEEDS ADJUSTING\
+betCheck();
+    hit = true;
+    stand = false;
+    dealerScore = 0;
+    playerScore = 0;
+        if (player.turnNumber === 0){ //If player has zero cards, give them two and the dealer one and a face down.
+            for (let i = 0; i < 2; i++) { //Gets player cards
+                let randIdx = Math.floor(Math.random()*deck.length);
+                player.cardPicked = deck.splice(randIdx, 1);
+                player.cardsSelected.push(player.cardPicked);
+                player.turnNumber = 1
+
+                } 
+            let randIdx = Math.floor(Math.random()*deck.length);
+            dealer.cardPicked = deck.splice(randIdx, 1);
+            dealer.cardsSelected.push(dealer.cardPicked)
+        // } else if (player.turnNumber === 1) {
+        //     dealerAction();
+        //     player.turnNumber += 1
+        //     let randIdx = Math.floor(Math.random()*deck.length);
+        //     player.cardPicked = deck.splice(randIdx, 1);
+        //     player.cardsSelected.push(player.cardPicked)
+        } else {
             let randIdx = Math.floor(Math.random()*deck.length);
             player.cardPicked = deck.splice(randIdx, 1);
-            player.cardsSelected.push(player.cardPicked);
-            player.turnNumber = 1
-
-            } 
-        let randIdx = Math.floor(Math.random()*deck.length);
-        dealer.cardPicked = deck.splice(randIdx, 1);
-        dealer.cardsSelected.push(dealer.cardPicked)
-    // } else if (player.turnNumber === 1) {
-    //     dealerAction();
-    //     player.turnNumber += 1
-    //     let randIdx = Math.floor(Math.random()*deck.length);
-    //     player.cardPicked = deck.splice(randIdx, 1);
-    //     player.cardsSelected.push(player.cardPicked)
-    } else {
-        let randIdx = Math.floor(Math.random()*deck.length);
-        player.cardPicked = deck.splice(randIdx, 1);
-        player.cardsSelected.push(player.cardPicked)
+            player.cardsSelected.push(player.cardPicked)
+        }
+    getTotals();
+    hitChecker();
     }
-getTotals();
-hitChecker();
-}
 
 function standFunction(){
 hit = false;
@@ -228,9 +229,25 @@ function scoreRender(){
     document.getElementById("playerCurrentScore").innerText = playerScore
 }
 
+function checkHasAce(){
+    for (let i = 0; i < dealer.cardsSelected.length; i++){
+        if(dealer.cardsSelected[i] === "dA" || dealer.cardsSelected[i] === "hA" || dealer.cardsSelected[i] ==="cA" || dealer.cardsSelected[i] === "sA"){
+        dealer.aceCount += 1;
+        }
+    }
+    for (let i = 0; i < player.cardsSelected.length; i++){
+        if(player.cardsSelected[i] === "dA" || player.cardsSelected[i] === "hA" || dealer.cardsSelected[i] ==="cA" || dealer.cardsSelected[i] === "sA"){
+        dealer.aceCount += 1;
+        }
+    }
+
+}
+
 //Bet Input function:
-function betFunct(){
+function betCheck(){
+if (player.turnNumber === 0){
     if (totalCash === 0) { //If player has no money, 
+        player.betAmount = 0;
         hitBtn.style.display = "none";
         standBtn.style.display = "none";
     } else if ((totalCash - betAmount) < 0) {
@@ -238,8 +255,9 @@ function betFunct(){
         hitBtn.style.display = "none";
         standBtn.style.display = "none";
     } else {
-        totalCash.innerHTML = totalCash.innerHTML - betAmount;
-        totalCash = totalCash.innerHTML
+        totalCash -= betAmount;
+        document.getElementById("cashTotal").innerHTML = totalCash;
+    }
     }
 }
 
@@ -247,6 +265,7 @@ function betFunct(){
 //MAKE Hit and standing in proper order
 
 function checkResults(){
+results = true;
     if (stand === true){
         if (dealerScore > playerScore && dealerScore < 21){
             loss(); 
@@ -277,7 +296,7 @@ function blackJack(){  //Add rewards
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
     console.log("Blackjack!")
-    setTimeout(roundReset, 4000)
+    setTimeout(roundReset, 3000)
 }
 
 function push(){ //If dealer 
@@ -285,7 +304,7 @@ function push(){ //If dealer
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
     console.log("Push")
-    setTimeout(roundReset, 4000)
+    setTimeout(roundReset, 3000)
 }
 
 function bust(){
@@ -293,7 +312,7 @@ function bust(){
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
     console.log("bust")
-    setTimeout(roundReset, 4000)
+    setTimeout(roundReset, 3000)
 }
 
 function win(){
@@ -301,13 +320,13 @@ function win(){
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
     console.log("Win")
-    setTimeout(roundReset, 4000)
+    setTimeout(roundReset, 3000)
 }
 
 function loss(){
     console.log(totalCash)
     console.log("loss")
-    setTimeout(roundReset, 4000)
+    setTimeout(roundReset, 3000)
 }
 
 function roundReset(){ //*ADD Message render
@@ -323,7 +342,9 @@ function roundReset(){ //*ADD Message render
 
     document.getElementById("dealerCurrentScore").innerText = dealerScore
     document.getElementById("playerCurrentScore").innerText = playerScore
+    results = false;
 }
+
 
 
 
