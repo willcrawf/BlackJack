@@ -23,6 +23,7 @@ init();
 let leaderboarddBtn = document.getElementById("leaderboardButton"); //Actual button
 let leaderboardList = document.getElementById("leaderboardList"); //Parent List
 let leaderboardNames = document.getElementById("leaderboardNames"); //<li>
+let messageEl = document.getElementById("message");
 
 let resetBtn = document.getElementById("resetButton"); //Gets reset button
 let hitBtn = document.getElementById("hitButton"); //Grabs hit button
@@ -99,7 +100,6 @@ function deckRandomizer(){ //Randomizes 8 different decks
 }
 
 function hitFunction(){ //*NEEDS ADJUSTING//
-
 betCheck();
     hit = true;
     stand = false;
@@ -134,6 +134,8 @@ function cardRender(){ //*NEEDS PLAYER CARD RENDERING
     if (player.turnNumber === 0){
     dealerCard1.className = `card large ${dealer.cardPicked}`
     dealerCard2.className = "card large back-red shadow" 
+    } else {
+
     }
 }
 function standFunction(){
@@ -252,19 +254,17 @@ function checkHasAce(){
 function betCheck(){
 if (player.turnNumber === 0){
     if (totalCash === 0) { //If player has no money, 
+        messageEl.innerHTML = "You ran out of money!!"
         player.betAmount = 0;
         hitBtn.style.display = "none";
         standBtn.style.display = "none";
     } else if ((totalCash - betAmount) < 0) {
+        messageEl.innerHTML = "You ran out of money!!"
         player.betAmount = 0;
         hitBtn.style.display = "none";
-        standBtn.style.display = "none";
-    } else {
-        totalCash -= betAmount;
-        document.getElementById("cashTotal").innerHTML = totalCash;
+        standBtn.style.display = "none"
     }
-    }
-}
+}}
 
 //MAKE Hit and standing in proper order
 function checkResults(){
@@ -297,41 +297,47 @@ function blackJack(){  //Add rewards
     totalCash += player.betAmount*1.5;
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
-    console.log("Blackjack!")
-    setTimeout(roundReset, 3000)
+    messageEl.innerHTML = "Blackjack! 1.5x win!"
+    hideButtons()
+    setTimeout(roundReset, 1500)
 }
 
 function push(){ //If dealer 
     totalCash += player.betAmount
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
-    console.log("Push")
-    setTimeout(roundReset, 3000)
+    messageEl.innerHTML = "Push!"
+    hideButtons()
+    setTimeout(roundReset, 1500)
 }
 
 function bust(){
     totalCash -= player.betAmount
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
-    console.log("bust")
-    setTimeout(roundReset, 3000)
+    messageEl.innerHTML = "Bust!"
+    hideButtons()
+    setTimeout(roundReset, 1500)
 }
 
 function win(){
     totalCash += player.betAmount*2
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
-    console.log("Win")
-    setTimeout(roundReset, 3000)
+    messageEl.innerHTML = "Player Wins!"
+    hideButtons()
+    setTimeout(roundReset, 1500)
 }
 
 function loss(){
     console.log(totalCash)
-    console.log("loss")
-    setTimeout(roundReset, 3000)
+    messageEl.innerHTML = "Loss!"
+    hideButtons()
+    setTimeout(roundReset, 1500)
 }
 
 function roundReset(){ //*ADD Message render
+    messageEl.innerHTML = "Good Luck!"
     player.turnNumber = 0;
     hit = false;
     stand = false;
@@ -340,22 +346,24 @@ function roundReset(){ //*ADD Message render
     dealer.cardsSelected = [];
     player.cardPicked = '';
     dealer.cardPicked = '';
+    
     getTotals()
 
     document.getElementById("dealerCurrentScore").innerText = dealerScore
     document.getElementById("playerCurrentScore").innerText = playerScore
     results = false;
+    showButtons()
 }
 
+function hideButtons(){
+hitBtn.style.display = "none";
+standBtn.style.display = "none";
+}
 
-
-
-//10 + ace = automatic 1.5 times win 
-//Once dealer flips second card, if 16 or under, they have to take another card, otherwise stay, if dealer busts then you win 2x. 
-//If dealer doesn't bust with 17 or over  - you have to beat the value without busting
-//When dealer and player tie = push, you get your money back
-//If one the first 
-
+function showButtons(){
+    hitBtn.style.display = "block";
+    standBtn.style.display = "block";
+}
 
 
 
@@ -364,7 +372,6 @@ function roundReset(){ //*ADD Message render
 
 
 //Card deck
-//Create way to bet - needs to take off the total and also be stored to see if bet is won
 //Double down stuff
 //Make push, hit, and stand, splitting, insurance, doubling down and deal buttons
 //Bust logic
