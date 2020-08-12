@@ -3,10 +3,10 @@
 let maxScore = 21;
 let deck2, deck3, deck4; //8 Decks
 let hit = false;
+let stand = false;
 
 //Put lose here after logic is figured out
 //Put win here
-let totalCash = null;
 let playerCardAmount = 0;
 const deck1 = ["dA","dQ","dK","dJ","d10","d09","d08","d07","d06","d05","d04","d03","d02","hA","hQ","hK","hJ","h10","h09","h08","h07","h06","h05","h04","h03","h02","cA","cQ","cK","cJ","c10","c09","c08","c07","c06","c05","c04","c03","c02","sA","sQ","sK","sJ","s10","s09","s08","s07","s06","s05","s04","s03","s02"];
 let dealerCardAmount = 0;
@@ -31,18 +31,23 @@ init();
 let leaderboarddBtn = document.getElementById("leaderboardButton"); //Actual button
 let leaderboardList = document.getElementById("leaderboardList"); //Parent List
 let leaderboardNames = document.getElementById("leaderboardNames"); //<li>
+
 let resetBtn = document.getElementById("resetButton"); //Gets reset button
-    totalCash = document.getElementById("cashTotal"); //Grabs cash ammount
 let hitBtn = document.getElementById("hitButton"); //Grabs hit button
 let betBtn = document.getElementById("betButton")
-let betAmount = document.getElementById("betAmount").innerHTML
 let standBtn = document.getElementById("standButton");
+
+let totalCash = document.getElementById("cashTotal").innerHTML; //Grabs cash ammount
+totalCash = parseInt(totalCash)
+let betAmount = document.getElementById("betAmount").innerHTML
 betAmount = parseInt(betAmount);
+
 let dealerScore = document.getElementById("dealerCurrentScore").innerHTML
 let playerScore = document.getElementById("playerCurrentScore").innerHTML
 parseInt(dealerScore)
 playerScore = parseInt(playerScore)
 dealerScore = parseInt(dealerScore)
+
 let dealerCard1 = document.getElementById("dealerCard1");
 let dealerCard2 = document.getElementById("dealerCard2");
 let playerCard1 = document.getElementById("playerCard1");
@@ -51,7 +56,6 @@ let hitAndStand = document.getElementById("buttonLine")
 
 let player = {
     name: "Will",
-    totalCash: totalCash,
     betAmount: betAmount,
     currentScore: playerScore,
     turnNumber: 0,
@@ -103,6 +107,7 @@ function deckRandomizer(){ //Randomizes 8 different decks
 
 function hitFunction(){ //*NEEDS ADJUSTING
 hit = true;
+stand = false;
 dealerScore = 0;
 playerScore = 0;
      if (player.turnNumber === 0){ //If player has zero cards, give them two and the dealer one and a face down.
@@ -116,13 +121,12 @@ playerScore = 0;
         let randIdx = Math.floor(Math.random()*deck.length);
         dealer.cardPicked = deck.splice(randIdx, 1);
         dealer.cardsSelected.push(dealer.cardPicked)
-
-    } else if (player.turnNumber === 1) {
-        dealerAction();
-        player.turnNumber += 1
-        let randIdx = Math.floor(Math.random()*deck.length);
-        player.cardPicked = deck.splice(randIdx, 1);
-        player.cardsSelected.push(player.cardPicked)
+    // } else if (player.turnNumber === 1) {
+    //     dealerAction();
+    //     player.turnNumber += 1
+    //     let randIdx = Math.floor(Math.random()*deck.length);
+    //     player.cardPicked = deck.splice(randIdx, 1);
+    //     player.cardsSelected.push(player.cardPicked)
     } else {
         let randIdx = Math.floor(Math.random()*deck.length);
         player.cardPicked = deck.splice(randIdx, 1);
@@ -130,18 +134,16 @@ playerScore = 0;
     }
 getTotals();
 hitChecker();
-    }
-
-function standFunction(){
-stand = true;
-    if (player.turnNumber > 0) {
-        dealerStand()
-        standTest()
-    }
-console.log(playerScore)
-console.log(dealerScore)
 }
 
+function standFunction(){
+hit = false;
+stand = true;
+if (player.turnNumber > 0) {
+    dealerStand()
+    standTest()
+}
+}
 function dealerStand(){
     while (stand === true && dealerScore <= 17) {
         dealerAction()
@@ -150,6 +152,7 @@ stand = false
 }
 
 function standTest(){
+    stand = true;
     checkResults();
 }
 
@@ -164,6 +167,7 @@ function dealerAction() {
 }        
 
 function hitChecker(){
+    hit = true;
     checkResults();
 }
 
@@ -238,59 +242,66 @@ function betFunct(){
 }
 
 
-
+//MAKE Hit and standing in proper order
 
 function checkResults(){
-if (stand === true){
-    
-}
-    if (dealerScore > playerScore && dealerScore < 21){
-        loss(); 
-    } else if (playerScore > dealerScore && playerScore < 21){
-        win()
-    } else if (playerScore === 21 && dealerScore !== 21) {
-        blackJack() 
-    } else if (playerScore === dealerScore && playerScore <= 21){
-        push()
-    } else if (dealerScore === 21 && playerScore !== 21) {
-        loss();
-    } else if (dealerScore > 21 && playerScore < 21) {
-        win()
-    } else if (playerScore > 21){
-        bust();
-    } else if (playerScore === 21){
-        blackJack()
+    if (stand === true){
+        if (dealerScore > playerScore && dealerScore < 21){
+            loss(); 
+        } else if (playerScore > dealerScore && playerScore < 21){
+            win()
+        } else if (playerScore === 21 && dealerScore !== 21) {
+            blackJack() 
+        } else if (playerScore === dealerScore && playerScore <= 21){
+            push()
+        } else if (dealerScore === 21 && playerScore !== 21) {
+            loss();
+        } else if (dealerScore > 21 && playerScore < 21) {
+            win()
+        }
     }
-}
+    if (hit === true){
+        if (playerScore > 21){
+            bust();
+        } else if (playerScore === 21){
+            blackJack()
+        }}
+    }
+
     
 //If player gets blackjack
 function blackJack(){  //Add rewards
     totalCash += player.betAmount*1.5;
-    totalCash.innerHTML = totalCash
+    document.getElementById("cashTotal").innerHTML = totalCash
+    console.log(totalCash)
     console.log("Blackjack!")
 }
 
 function push(){ //If dealer 
     totalCash += player.betAmount
-    totalCash.innerHTML = totalCash
+    document.getElementById("cashTotal").innerHTML = totalCash
+    console.log(totalCash)
     console.log("Push")
 }
 
 function bust(){
     totalCash -= player.betAmount
-    totalCash.innerHTML = totalCash
+    document.getElementById("cashTotal").innerHTML = totalCash
+    console.log(totalCash)
     console.log("bust")
 }
 
 function win(){
     totalCash += player.betAmount*2
-    totalCash.innerHTML = totalCash
+    document.getElementById("cashTotal").innerHTML = totalCash
+    console.log(totalCash)
     console.log("Win")
 }
 
 function loss(){
     totalCash -= player.betAmount
-    totalCash.innerText = totalCash
+    document.getElementById("cashTotal").innerHTML = totalCash
+    console.log(totalCash)
     console.log("loss")
 }
     
