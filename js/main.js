@@ -70,7 +70,7 @@ let dealer = {
 //* Event Listeners
 hitBtn.addEventListener('click',hitFunction) //Listens for player to press hit and runs the hitFunction
 betBtn.addEventListener('click',betFunct)
-
+standBtn.addEventListener('click',standFunction)
 
 
 //* FUNCTIONS:
@@ -103,33 +103,73 @@ function deckRandomizer(){ //Randomizes 8 different decks
 
 function hitFunction(){ //*NEEDS ADJUSTING
 hit = true;
+dealerScore = 0;
+playerScore = 0;
      if (player.turnNumber === 0){ //If player has zero cards, give them two and the dealer one and a face down.
         for (let i = 0; i < 2; i++) { //Gets player cards
             let randIdx = Math.floor(Math.random()*deck.length);
             player.cardPicked = deck.splice(randIdx, 1);
             player.cardsSelected.push(player.cardPicked);
             player.turnNumber = 1
-        }
-            let randIdx = Math.floor(Math.random()*deck.length);
-            dealer.cardPicked = deck.splice(randIdx, 1);
-            dealer.cardsSelected.push(dealer.cardPicked)
 
-        } else {
-            let randIdx = Math.floor(Math.random()*deck.length);
-            player.cardPicked = deck.splice(randIdx, 1);
-            player.cardsSelected.push(player.cardPicked)
-        }
-       
+            } 
+        let randIdx = Math.floor(Math.random()*deck.length);
+        dealer.cardPicked = deck.splice(randIdx, 1);
+        dealer.cardsSelected.push(dealer.cardPicked)
+
+    } else if (player.turnNumber === 1) {
+        dealerAction();
+        player.turnNumber += 1
+        let randIdx = Math.floor(Math.random()*deck.length);
+        player.cardPicked = deck.splice(randIdx, 1);
+        player.cardsSelected.push(player.cardPicked)
+    } else {
+        let randIdx = Math.floor(Math.random()*deck.length);
+        player.cardPicked = deck.splice(randIdx, 1);
+        player.cardsSelected.push(player.cardPicked)
+    }
 getTotals();
-console.log(`"Dealer score: " ${dealerScore}`)
-console.log(playerScore)
-console.log(player.cardsSelected)
-checkBlackJack();
+hitChecker();
     }
 
+function standFunction(){
+stand = true;
+    if (player.turnNumber > 0) {
+        dealerStand()
+        standTest()
+    }
+console.log(playerScore)
+console.log(dealerScore)
+}
 
+function dealerStand(){
+    while (stand === true && dealerScore <= 17) {
+        dealerAction()
+    }
+stand = false
+}
+
+function standTest(){
+    checkResults();
+}
+
+//After 1st hit, dealer reveals second card. you then decide hit or stand
+//If you decide to stand 
+
+function dealerAction() {
+    let randIdx = Math.floor(Math.random()*deck.length);
+    dealer.cardPicked = deck.splice(randIdx, 1);
+    dealer.cardsSelected.push(dealer.cardPicked)
+    getTotals()
+}        
+
+function hitChecker(){
+    checkResults();
+}
 
 function getTotals() {
+    playerScore = 0;
+    dealerScore = 0;
     // This will eventually need to account for A being 1/11
     for (let i=0; i < dealer.cardsSelected.length; i++) {
         dealerScore += cardLookup(`${dealer.cardsSelected[i]}`)
@@ -137,6 +177,7 @@ function getTotals() {
     for (let i=0; i < player.cardsSelected.length; i++) {
         playerScore += cardLookup(`${player.cardsSelected[i]}`)
     }
+scoreRender();
 }
 
 function cardLookup(card) {
@@ -177,60 +218,81 @@ function cardLookup(card) {
     return cardValue
 }
 
-
 //Render function:
-function render(){
-    if (player.turnNumber === 0) {
-        playerCard1.className = player.cardsSelected[0]
-        console.log(player.cardsSelected[0])
-        playerCard1.className = player.cardsSelected[1]
-
-    }
+function scoreRender(){
+    document.getElementById("dealerCurrentScore").innerText = dealerScore
+    document.getElementById("playerCurrentScore").innerText = playerScore
 }
 
 //Bet Input function:
 function betFunct(){
-    
-    if (player.totalCash === 0) {
+    if (totalCash === 0) {
     betButton.style.display = "none";
-    } else if ((player.totalCash - betAmount) < 0) {
+    } else if ((totalCash - betAmount) < 0) {
         player.betAmount = 0;
         betButton.style.display = "none";
     } else {
         totalCash.innerHTML = totalCash.innerHTML - betAmount;
-        player.totalCash = totalCash.innerHTML
-        console.log(player.totalCash)
+        totalCash = totalCash.innerHTML
     }
 }
 
+
+
+
+function checkResults(){
+if (stand === true){
+    
+}
+    if (dealerScore > playerScore && dealerScore < 21){
+        loss(); 
+    } else if (playerScore > dealerScore && playerScore < 21){
+        win()
+    } else if (playerScore === 21 && dealerScore !== 21) {
+        blackJack() 
+    } else if (playerScore === dealerScore && playerScore <= 21){
+        push()
+    } else if (dealerScore === 21 && playerScore !== 21) {
+        loss();
+    } else if (dealerScore > 21 && playerScore < 21) {
+        win()
+    } else if (playerScore > 21){
+        bust();
+    } else if (playerScore === 21){
+        blackJack()
+    }
+}
+    
 //If player gets blackjack
-function checkBlackJack(){  //Add rewards
-    if (playerScore === 21 && dealerScore !== 21) {
-        player.totalCash += player.betAmount*1.5
-        console.log("Blackjack!")
-    }
+function blackJack(){  //Add rewards
+    totalCash += player.betAmount*1.5;
+    totalCash.innerHTML = totalCash
+    console.log("Blackjack!")
 }
 
-function checkPush(){ //If dealer 
-    if (playerScore === dealerScore && stand === true){
-        player.totalCash += player.betAmount;
-        console.log("Push")
-    }
+function push(){ //If dealer 
+    totalCash += player.betAmount
+    totalCash.innerHTML = totalCash
+    console.log("Push")
 }
 
-function checkLoss(){
-    if (playerScore > 21) {
-    loss()
-    } if (dealer.loss === false && playerScore < dealerScore){
-        console.log("Player loses, dealer beat you.")
-    } 
+function bust(){
+    totalCash -= player.betAmount
+    totalCash.innerHTML = totalCash
+    console.log("bust")
+}
+
+function win(){
+    totalCash += player.betAmount*2
+    totalCash.innerHTML = totalCash
+    console.log("Win")
 }
 
 function loss(){
-    player.totalCash -= player.betAmount
-    console.log(player.totalCash)
+    totalCash -= player.betAmount
+    totalCash.innerText = totalCash
+    console.log("loss")
 }
-
     
 //Push = when dealer has same value as player, don't win or lose
 //10 + ace = automatic 1.5 times win 
@@ -255,11 +317,14 @@ function loss(){
 
 //hitting: add another card to your total
 //standing: you're happy with your total, no new cards 
+
 //doubling down: only available for your first two cards or when you split
     //it places equal bet to original bet. you can't hit after doubling.
-//splitting: when two cards are of equal value, then you can place another equal bet out
+
+    //splitting: when two cards are of equal value, then you can place another equal bet out
     //pair of aces can only get one hit, basically adds another hand
-//Insurance: If dealer has an ace, you can add half your bet as insurance.
+
+    //Insurance: If dealer has an ace, you can add half your bet as insurance.
     //Insurance pays 2 to 1 so you break even.
 
 

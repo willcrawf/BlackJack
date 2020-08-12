@@ -25,6 +25,11 @@
     text-align: left;
 }
 
+#message {
+  text-align: center;
+  margin: 0px 0px 65px 0px;
+}
+
 #playerName {
     justify-content: flex-end;
 }
