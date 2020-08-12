@@ -230,11 +230,13 @@ function scoreRender(){
 
 //Bet Input function:
 function betFunct(){
-    if (totalCash === 0) {
-    betButton.style.display = "none";
+    if (totalCash === 0) { //If player has no money, 
+        hitBtn.style.display = "none";
+        standBtn.style.display = "none";
     } else if ((totalCash - betAmount) < 0) {
         player.betAmount = 0;
-        betButton.style.display = "none";
+        hitBtn.style.display = "none";
+        standBtn.style.display = "none";
     } else {
         totalCash.innerHTML = totalCash.innerHTML - betAmount;
         totalCash = totalCash.innerHTML
@@ -275,6 +277,7 @@ function blackJack(){  //Add rewards
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
     console.log("Blackjack!")
+    setTimeout(roundReset, 4000)
 }
 
 function push(){ //If dealer 
@@ -282,6 +285,7 @@ function push(){ //If dealer
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
     console.log("Push")
+    setTimeout(roundReset, 4000)
 }
 
 function bust(){
@@ -289,6 +293,7 @@ function bust(){
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
     console.log("bust")
+    setTimeout(roundReset, 4000)
 }
 
 function win(){
@@ -296,15 +301,32 @@ function win(){
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
     console.log("Win")
+    setTimeout(roundReset, 4000)
 }
 
 function loss(){
-    totalCash -= player.betAmount
-    document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
     console.log("loss")
+    setTimeout(roundReset, 4000)
 }
-    
+
+function roundReset(){ //*ADD Message render
+    player.turnNumber = 0;
+    hit = false;
+    stand = false;
+
+    player.cardsSelected= [];
+    dealer.cardsSelected = [];
+    player.cardPicked = '';
+    dealer.cardPicked = '';
+    getTotals()
+
+    document.getElementById("dealerCurrentScore").innerText = dealerScore
+    document.getElementById("playerCurrentScore").innerText = playerScore
+}
+
+
+
 //Push = when dealer has same value as player, don't win or lose
 //10 + ace = automatic 1.5 times win 
 //Once dealer flips second card, if 16 or under, they have to take another card, otherwise stay, if dealer busts then you win 2x. 
