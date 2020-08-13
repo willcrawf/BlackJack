@@ -31,6 +31,7 @@ let resetBtn = document.getElementById("resetButton"); //Gets reset button
 let hitBtn = document.getElementById("hitButton"); //Grabs hit button
 let betBtn = document.getElementById("betButton")
 let standBtn = document.getElementById("standButton");
+let doubleDownBtn = document.getElementById("doubleDownButton")
 
 let totalCash = document.getElementById("cashTotal").innerHTML; //Grabs cash ammount
 totalCash = parseInt(totalCash)
@@ -75,7 +76,6 @@ let dealer = {
 //* Event Listeners
 hitBtn.addEventListener('click',hitFunction) //Listens for player to press hit and runs the hitFunction
 standBtn.addEventListener('click',standFunction)
-
 
 //* FUNCTIONS:
 function init(){
@@ -192,24 +192,6 @@ function hitChecker(){
     hit = true;
     checkResults();
 }
-// function getTotals() {
-//     playerScore = 0;
-//     dealerScore = 0;
-//     // This will eventually need to account for A being 1/11
-//     for (let i=0; i < dealer.cardsSelected.length; i++) {
-//         dealerScore += cardLookup(`${dealer.cardsSelected[i]}`)
-//         if ((dealerScore + 11) > 21 && hasAce === true) {
-//             dealerScore -= 10
-//         }
-//     }
-//     for (let i=0; i < player.cardsSelected.length; i++) {
-//         playerScore += cardLookup(`${player.cardsSelected[i]}`)
-//         if (playerScore > 21 && player.aceCount > 0){
-//             playerScore -= 10*player.aceCount;
-//         }
-//     }
-// scoreRender();
-// }
 
 let aceCount = 0;
 let aceCalc = false;
@@ -293,23 +275,6 @@ function scoreRender(){
     document.getElementById("dealerCurrentScore").innerText = dealerScore
     document.getElementById("playerCurrentScore").innerText = playerScore
 }
-
-// function checkHasAce(dealer, player){
-//     for (let i = 0; i < dealer.length; i++){
-//         if(dealer[i] === "dA" || dealer[i] === "hA" || dealer[i] ==="cA" || dealer[i] === "sA"){
-//             console.log(dealer.cardsSelected[i])
-//             dealerAce = true;
-//         }
-//     }
-//     for (let i = 0; i < player.length; i++){
-//         if(player[i] === "dA" || player[i] === "hA" || player[i] ==="cA" || player[i] === "sA"){
-//         playerAce = true
-//         }
-
-//         console.log(dealerAce)
-//         console.log(playerAce)
-//     }
-// }
 //* needs to be fixed .. adds double actual bet amount
 function betCheck(){
 if (player.turnNumber === 0){
@@ -326,6 +291,14 @@ if (player.turnNumber === 0){
     }
 }}
 
+function doubleDown(){
+    if (player.turnNumber === 0){
+        betAmount = betAmount*2
+        hitFunction()
+    } else {
+        doubleDownBtn.style.display = "none";
+    }
+}
 //MAKE Hit and standing in proper order
 function checkResults(){
 results = true;
@@ -442,7 +415,7 @@ function showButtons(){
 
 
 
-
+//Add margin between leadboard and reset button
 
 
 //Card deck
