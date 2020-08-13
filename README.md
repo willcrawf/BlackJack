@@ -2,6 +2,11 @@
 
 ##### By Will Crawford
 
+###Wireframe:
+![Wireframe](https://i.imgur.com/ZqKtFaH.png "Wireframe")
+
+
+
 ### Game Images:
 ![img1](https://i.imgur.com/69yUPMU.png "test")
 ![img2](https://i.imgur.com/BX9mBMv.png "test")
@@ -24,4 +29,4 @@ A full list of instructions are listed under the "nav bar" on the Blackjack webs
 * Being able to change bet amount
 * Leadboard working
 * Animation
-* Sounds
+* ~~Sounds~~

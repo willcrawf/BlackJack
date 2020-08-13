@@ -60,7 +60,7 @@
                 <path d="M8 0l1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z"/>
                 <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"/>
                 </svg></button>
-            <button type="button" class="btn btn-danger btn-sm" id = "resetButton">Reset Game <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-arrow-repeat" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <button type="button" onClick="window.location.reload()" class="btn btn-danger btn-sm" id = "resetButton">Reset Game <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-arrow-repeat" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M2.854 7.146a.5.5 0 0 0-.708 0l-2 2a.5.5 0 1 0 .708.708L2.5 8.207l1.646 1.647a.5.5 0 0 0 .708-.708l-2-2zm13-1a.5.5 0 0 0-.708 0L13.5 7.793l-1.646-1.647a.5.5 0 0 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0 0-.708z"/>
             <path fill-rule="evenodd" d="M8 3a4.995 4.995 0 0 0-4.192 2.273.5.5 0 0 1-.837-.546A6 6 0 0 1 14 8a.5.5 0 0 1-1.001 0 5 5 0 0 0-5-5zM2.5 7.5A.5.5 0 0 1 3 8a5 5 0 0 0 9.192 2.727.5.5 0 1 1 .837.546A6 6 0 0 1 2 8a.5.5 0 0 1 .501-.5z"/>
             </svg></button>
@@ -71,7 +71,7 @@
     
 <div id = "header">
     <h3 id = "playerName">Player: Will</h3>
-    <h3 id = "totalCash">Total Cash: $<span id = cashTotal>100</span></h3>
+    <h3 id = "totalCash">Total Cash: $<span id = cashTotal>1000</span></h3>
 </div>
 
 <div>
@@ -108,7 +108,7 @@
 
 <div id = "betButtonDiv">
     <button type="button" id="betButton" class="btn btn-dark" >Bet set at <br>$<span id = "betAmount">50</span> </button>
-    <button type="button" id="betButton" class="btn btn-warning"  id = "doubleDownButton">Double Down <br> Bet</button> 
+    <button type="button" class="btn btn-warning"  id = "doubleDownButton">Double Down <br> Bet</button> 
 
 </div>
 

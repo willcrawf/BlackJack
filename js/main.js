@@ -7,6 +7,7 @@ let stand = false;
 let results = false;
 let playerAce = false;
 let dealerAce = false;
+let ifDoubleDown = false;
 
 //Put lose here after logic is figured out
 //Put win here
@@ -56,6 +57,10 @@ const buttonAudio = new Audio("Audio/buttonSound.wav")
 function buttonAudioSound(){
     buttonAudio.play();
 }
+const winAudio = new Audio("Audio/winSound.mp3")
+function winAudioSound(){
+    winAudio.play();
+}
 
 let player = {
     name: "Will",
@@ -81,14 +86,14 @@ hitBtn.addEventListener('click',hitFunction) //Listens for player to press hit a
 hitBtn.addEventListener('click',buttonAudioSound);
 standBtn.addEventListener('click',buttonAudioSound);
 standBtn.addEventListener('click',standFunction)
+resetBtn.addEventListener('click',init())
+doubleDownBtn.addEventListener('click',doubleDownFunct)
 
 //* FUNCTIONS:
 function init(){
-
     //Initilization functions:
     deckRandomizer();
 }
-init()
 
 function deckRandomizer(){ //Randomizes 8 different decks
     deck2 = deck1.slice(0, deck1.length)
@@ -110,7 +115,7 @@ function deckRandomizer(){ //Randomizes 8 different decks
     return deck;
 }
 
-function hitFunction(){ //*NEEDS ADJUSTING//
+function hitFunction(){ 
 betCheck();
     hit = true;
     stand = false;
@@ -135,8 +140,6 @@ betCheck();
 
         }
     cardRender()
-    console.log(player.cardsSelected)
-    console.log(dealer.cardsSelected)
     getTotals();
     hitChecker();
     player.turnNumber += 1
@@ -201,8 +204,8 @@ function hitChecker(){
 let aceCount = 0;
 let aceCalc = false;
 
-function getTotals() {
-    playerScore = 0;
+function getTotals(){
+playerScore = 0;
     dealerScore = 0;
     aceCount = 0;
     for (let i=0; i < dealer.cardsSelected.length; i++) {
@@ -296,32 +299,48 @@ if (player.turnNumber === 0){
     }
 }}
 
-function doubleDown(){
-    if (player.turnNumber === 0){
-        betAmount = betAmount*2
-        hitFunction()
-    } else {
-        doubleDownBtn.style.display = "none";
-    }
+function doubleDownFunct(){
+betCheck()
+ifDoubleDown = true;
+if (player.turnNumber === 0){
+    betAmount = betAmount*2;
+    betBtn.innerText = `Bet amount: ${betAmount}`
+    doubleDownBtn.style.display = "none"
+} else {
+    doubleDownBtn.style.display = "none"
+}
 }
 //MAKE Hit and standing in proper order
 function checkResults(){
-results = true;
+
     if (stand === true){
         if (dealerScore > playerScore && dealerScore < 21){
             loss(); 
         } else if (playerScore > dealerScore && playerScore < 21){
             win()
+           
         } else if (playerScore === 21 && dealerScore !== 21) {
             blackJack() 
+  
         } else if (playerScore === dealerScore && playerScore <= 21){
             push()
+ 
         } else if (dealerScore === 21 && playerScore !== 21) {
             loss();
+            
         } else if (dealerScore > 21 && playerScore < 21) {
             win()
+            
         }
     }
+    if (hit === true){
+        if (playerScore > 21){
+            bust();
+        } else if (playerScore === 21){
+            blackJack()
+        }
+    }
+
     if (hit === true){
         if (playerScore > 21){
             bust();
@@ -337,6 +356,7 @@ function blackJack(){  //Add rewards
     console.log(totalCash)
     messageEl.innerHTML = "Blackjack! 1.5x win!"
     hideButtons()
+    winAudioSound()
     setTimeout(roundReset, 2200)
 }
 
@@ -350,6 +370,7 @@ function push(){ //If dealer
 }
 
 function bust(){
+
     totalCash -= player.betAmount
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
@@ -359,6 +380,7 @@ function bust(){
 }
 
 function win(){
+    winAudioSound()
     totalCash += player.betAmount*2
     document.getElementById("cashTotal").innerHTML = totalCash
     console.log(totalCash)
@@ -368,13 +390,20 @@ function win(){
 }
 
 function loss(){
+    totalCash -= player.betAmount
     console.log(totalCash)
     messageEl.innerHTML = "Loss!"
     hideButtons()
-    setTimeout(roundReset, 8000)
+    setTimeout(roundReset, 2200)
 }
 
 function roundReset(){ //*ADD Message render
+    playerScore = 0;
+    dealerScore = 0;
+    results = false;
+    if (ifDoubleDown = true) {
+        doubleDownBtn.style.display = "show"
+    }
     aceCount = 0;
     aceCalc = false;
     dealerHand.innerHTML = ""
@@ -413,6 +442,7 @@ standBtn.style.display = "none";
 function showButtons(){
     hitBtn.style.display = "block";
     standBtn.style.display = "block";
+    doubleDownBtn.style.display = "block";
 }
 
 
