@@ -5,6 +5,8 @@ let deck2, deck3, deck4; //8 Decks
 let hit = false;
 let stand = false;
 let results = false;
+let playerAce = false;
+let dealerAce = false;
 
 //Put lose here after logic is figured out
 //Put win here
@@ -43,14 +45,17 @@ dealerScore = parseInt(dealerScore)
 
 let dealerCard1 = document.getElementById("dealerCard1");
 let dealerCard2 = document.getElementById("dealerCard2");
+let dealerHand = document.getElementById("dealerDeck")
 let playerCard1 = document.getElementById("playerCard1");
 let playerCard2 = document.getElementById("playerCard2");
+let playerHand = document.getElementById("playerDeck")
 let hitAndStand = document.getElementById("buttonLine")
 
 
 
 let player = {
     name: "Will",
+    aceCount: 0,
     betAmount: betAmount,
     currentScore: playerScore,
     turnNumber: 0,
@@ -61,6 +66,7 @@ let player = {
 
 let dealer = {
     cardsSelected: [],
+    aceCount: 0,
     cardsPicked: [],
     currentScore: dealerScore,
     loss: false,
@@ -110,34 +116,48 @@ betCheck();
                 let randIdx = Math.floor(Math.random()*deck.length);
                 player.cardPicked = deck.splice(randIdx, 1);
                 player.cardsSelected.push(player.cardPicked);
+
                 } 
             let randIdx = Math.floor(Math.random()*deck.length);
             dealer.cardPicked = deck.splice(randIdx, 1);
             dealer.cardsSelected.push(dealer.cardPicked)
-            cardRender()
+            
 
         } else {
             let randIdx = Math.floor(Math.random()*deck.length);
             player.cardPicked = deck.splice(randIdx, 1);
             player.cardsSelected.push(player.cardPicked)
-        }
 
+        }
+    cardRender()
     console.log(player.cardsSelected)
     console.log(dealer.cardsSelected)
-    cardRender()
     getTotals();
     hitChecker();
     player.turnNumber += 1
     }
 
+
 function cardRender(){ //*NEEDS PLAYER CARD RENDERING
     if (player.turnNumber === 0){
     dealerCard1.className = `card large ${dealer.cardPicked}`
-    dealerCard2.className = "card large back-red shadow" 
-    } else {
-
+    dealerCard2.className = "card large back-red shadow"
+    } playerHand.innerHTML = ""
+    for (let i = 0; i < player.cardsSelected.length; i++){
+        let newCard = document.createElement("div");
+        newCard.className = `card large ${player.cardsSelected[i]}`;
+        playerHand.appendChild(newCard);
+    } 
+        if (player.turnNumber !== 0 && stand === true) {
+            dealerHand.innerHTML = "";
+            for (let i = 0; i < dealer.cardsSelected.length; i++){
+                let newCard = document.createElement("div");
+                newCard.className = `card large ${dealer.cardsSelected[i]}`;
+                dealerHand.appendChild(newCard);
+            }
     }
 }
+
 function standFunction(){
 hit = false;
 stand = true;
@@ -157,7 +177,6 @@ function standTest(){
     stand = true;
     checkResults();
 }
-
 //After 1st hit, dealer reveals second card. you then decide hit or stand
 //If you decide to stand 
 
@@ -165,6 +184,7 @@ function dealerAction() {
     let randIdx = Math.floor(Math.random()*deck.length);
     dealer.cardPicked = deck.splice(randIdx, 1);
     dealer.cardsSelected.push(dealer.cardPicked)
+    cardRender()
     getTotals()
 }        
 
@@ -172,28 +192,60 @@ function hitChecker(){
     hit = true;
     checkResults();
 }
+// function getTotals() {
+//     playerScore = 0;
+//     dealerScore = 0;
+//     // This will eventually need to account for A being 1/11
+//     for (let i=0; i < dealer.cardsSelected.length; i++) {
+//         dealerScore += cardLookup(`${dealer.cardsSelected[i]}`)
+//         if ((dealerScore + 11) > 21 && hasAce === true) {
+//             dealerScore -= 10
+//         }
+//     }
+//     for (let i=0; i < player.cardsSelected.length; i++) {
+//         playerScore += cardLookup(`${player.cardsSelected[i]}`)
+//         if (playerScore > 21 && player.aceCount > 0){
+//             playerScore -= 10*player.aceCount;
+//         }
+//     }
+// scoreRender();
+// }
+
+
+
 
 function getTotals() {
+
     playerScore = 0;
     dealerScore = 0;
-    checkHasAce();
     // This will eventually need to account for A being 1/11
     for (let i=0; i < dealer.cardsSelected.length; i++) {
         dealerScore += cardLookup(`${dealer.cardsSelected[i]}`)
-        if (dealerScore > 21 && dealer.aceCount > 0){
-            dealerScore -= 10*dealer.aceCount;
+        if (cardLookup(`${dealer.cardsSelected[i]}`) === 11) {
+            dealerAce = true
+        }
+        while (dealerAce === true) {
+            if (dealerScore > 21) {
+                dealerScore -= 10
+            }
         }
     }
     for (let i=0; i < player.cardsSelected.length; i++) {
         playerScore += cardLookup(`${player.cardsSelected[i]}`)
-        if (playerScore > 21 && player.aceCount > 0){
-            playerScore -= 10*player.aceCount;
+        if (cardLookup(`${player.cardsSelected[i]}`) === 11) {
+            playerAce = true
+        }
+        while (playerAce === true && checkResults === false) {
+            if (playerScore > 21) {
+                dealerScore -= 10
+            }
         }
     }
-scoreRender();
+    scoreRender();
 }
 
 function cardLookup(card) {
+    
     let cardValue;
     if (card === "dA" || card === "hA" || card ==="cA" || card === "sA"){
         cardValue = 11;
@@ -237,19 +289,22 @@ function scoreRender(){
     document.getElementById("playerCurrentScore").innerText = playerScore
 }
 
-function checkHasAce(){
-    for (let i = 0; i < dealer.cardsSelected.length; i++){
-        if(dealer.cardsSelected[i] === "dA" || dealer.cardsSelected[i] === "hA" || dealer.cardsSelected[i] ==="cA" || dealer.cardsSelected[i] === "sA"){
-        dealer.aceCount += 1;
-        }
-    }
-    for (let i = 0; i < player.cardsSelected.length; i++){
-        if(player.cardsSelected[i] === "dA" || player.cardsSelected[i] === "hA" || player.cardsSelected[i] ==="cA" || player.cardsSelected[i] === "sA"){
-        player.aceCount += 1;
-        }
-    }
-}
+// function checkHasAce(dealer, player){
+//     for (let i = 0; i < dealer.length; i++){
+//         if(dealer[i] === "dA" || dealer[i] === "hA" || dealer[i] ==="cA" || dealer[i] === "sA"){
+//             console.log(dealer.cardsSelected[i])
+//             dealerAce = true;
+//         }
+//     }
+//     for (let i = 0; i < player.length; i++){
+//         if(player[i] === "dA" || player[i] === "hA" || player[i] ==="cA" || player[i] === "sA"){
+//         playerAce = true
+//         }
 
+//         console.log(dealerAce)
+//         console.log(playerAce)
+//     }
+// }
 //* needs to be fixed .. adds double actual bet amount
 function betCheck(){
 if (player.turnNumber === 0){
@@ -299,7 +354,7 @@ function blackJack(){  //Add rewards
     console.log(totalCash)
     messageEl.innerHTML = "Blackjack! 1.5x win!"
     hideButtons()
-    setTimeout(roundReset, 1500)
+    setTimeout(roundReset, 2200)
 }
 
 function push(){ //If dealer 
@@ -308,7 +363,7 @@ function push(){ //If dealer
     console.log(totalCash)
     messageEl.innerHTML = "Push!"
     hideButtons()
-    setTimeout(roundReset, 1500)
+    setTimeout(roundReset, 2200)
 }
 
 function bust(){
@@ -317,7 +372,7 @@ function bust(){
     console.log(totalCash)
     messageEl.innerHTML = "Bust!"
     hideButtons()
-    setTimeout(roundReset, 1500)
+    setTimeout(roundReset, 2200)
 }
 
 function win(){
@@ -326,17 +381,29 @@ function win(){
     console.log(totalCash)
     messageEl.innerHTML = "Player Wins!"
     hideButtons()
-    setTimeout(roundReset, 1500)
+    setTimeout(roundReset, 2200)
 }
 
 function loss(){
     console.log(totalCash)
     messageEl.innerHTML = "Loss!"
     hideButtons()
-    setTimeout(roundReset, 1500)
+    setTimeout(roundReset, 2200)
 }
 
 function roundReset(){ //*ADD Message render
+    let playerAce = false;
+    let dealerAce = false;
+    dealerHand.innerHTML = ""
+    playerHand.innerHTML = ""
+    playerHand.appendChild(playerCard1)
+    playerHand.appendChild(playerCard2)
+    dealerHand.appendChild(dealerCard1)
+    dealerHand.appendChild(dealerCard2)
+    dealerCard1.className = "card large outline"
+    dealerCard2.className = "card large outline"
+
+
     messageEl.innerHTML = "Good Luck!"
     player.turnNumber = 0;
     hit = false;
