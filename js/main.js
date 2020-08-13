@@ -52,7 +52,10 @@ let playerCard2 = document.getElementById("playerCard2");
 let playerHand = document.getElementById("playerDeck")
 let hitAndStand = document.getElementById("buttonLine")
 
-
+const buttonAudio = new Audio("Audio/buttonSound.wav")
+function buttonAudioSound(){
+    buttonAudio.play();
+}
 
 let player = {
     name: "Will",
@@ -75,6 +78,8 @@ let dealer = {
 
 //* Event Listeners
 hitBtn.addEventListener('click',hitFunction) //Listens for player to press hit and runs the hitFunction
+hitBtn.addEventListener('click',buttonAudioSound);
+standBtn.addEventListener('click',buttonAudioSound);
 standBtn.addEventListener('click',standFunction)
 
 //* FUNCTIONS:
@@ -350,7 +355,7 @@ function bust(){
     console.log(totalCash)
     messageEl.innerHTML = "Bust!"
     hideButtons()
-    setTimeout(roundReset, 8000)
+    setTimeout(roundReset, 2200)
 }
 
 function win(){
@@ -409,8 +414,6 @@ function showButtons(){
     hitBtn.style.display = "block";
     standBtn.style.display = "block";
 }
-
-
 
 
 //Add margin between leadboard and reset button
