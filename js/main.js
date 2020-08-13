@@ -211,38 +211,46 @@ function hitChecker(){
 // scoreRender();
 // }
 
-
-let dealerAceCount = 0;
-let playerAceCount = 0;
+let aceCount = 0;
+let aceCalc = false;
 
 function getTotals() {
-    let hasAce = false;
     playerScore = 0;
     dealerScore = 0;
+    aceCount = 0;
     for (let i=0; i < dealer.cardsSelected.length; i++) {
+        if (cardLookup(`${dealer.cardsSelected[i]}`) === 11 && aceCalc === false){
+        aceCount += 1;
+                if (dealerScore < 11) {
+                    dealerScore += 11;
+                } else if (dealerScore > 11){
+                    dealerScore += 1*aceCount;
+                    aceCalc = true;
+                }       
+        } else if (cardLookup(`${dealer.cardsSelected[i]}`) !== 11) {
             dealerScore += cardLookup(`${dealer.cardsSelected[i]}`)
-            if (cardLookup(`${dealer.cardsSelected[i]}`) === 11){
-                dealerAceCount += 1;
-            }
-            if (dealerAceCount > 0 && dealerScore > 10){
-                dealerScore -= 10;
-            } 
+          } 
     }
-      
+    aceCalc = false;
+    aceCount = 0;
     for (let i=0; i < player.cardsSelected.length; i++) {
+            if (cardLookup(`${player.cardsSelected[i]}`) === 11 && aceCalc === false){
+            aceCount += 1
+                if (playerScore < 11) {
+                    playerScore += 11;
+                } else if (playerScore > 11){
+                    playerScore += 1*aceCount;
+                    aceCalc = true;
+                }       
+        } else if (cardLookup(`${player.cardsSelected[i]}`) !== 11) {
             playerScore += cardLookup(`${player.cardsSelected[i]}`)
-            if (cardLookup(`${player.cardsSelected[i]}`) === 11){
-                playerAceCount += 1;
-            }
-            if (playerAceCount > 0 && playerScore > 10){
-                playerScore -= 10;
-            }
+          } 
         }
+    
     scoreRender();
 }
 
 function cardLookup(card) {
-    
     let cardValue;
     if (card === "dA" || card === "hA" || card ==="cA" || card === "sA"){
         cardValue = 11;
@@ -389,6 +397,8 @@ function loss(){
 }
 
 function roundReset(){ //*ADD Message render
+    dealerAceCount = 0;
+    playerAceCount = 0;
     playerAce = false;
     dealerAce = false;
     dealerHand.innerHTML = ""
