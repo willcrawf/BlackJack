@@ -201,11 +201,10 @@ function hitChecker(){
     checkResults();
 }
 
-let aceCount = 0;
-let aceCalc = false;
 
-function getTotals(){
-playerScore = 0;
+
+function getTotals() {
+    playerScore = 0;
     dealerScore = 0;
     aceCount = 0;
     for (let i=0; i < dealer.cardsSelected.length; i++) {
@@ -239,7 +238,6 @@ playerScore = 0;
     
     scoreRender();
 }
-
 function cardLookup(card) {
     let cardValue;
     if (card === "dA" || card === "hA" || card ==="cA" || card === "sA"){
@@ -280,6 +278,7 @@ function cardLookup(card) {
 
 //Render function:
 function scoreRender(){
+
     document.getElementById("dealerCurrentScore").innerText = dealerScore
     document.getElementById("playerCurrentScore").innerText = playerScore
 }
@@ -421,8 +420,8 @@ function roundReset(){ //*ADD Message render
     hit = false;
     stand = false;
 
-    player.cardsSelected= [];
-    dealer.cardsSelected = [];
+    dealer.cardsSelected= [];
+    player.cardsSelected = [];
     player.cardPicked = '';
     dealer.cardPicked = '';
     
