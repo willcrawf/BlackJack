@@ -350,7 +350,7 @@ function bust(){
     console.log(totalCash)
     messageEl.innerHTML = "Bust!"
     hideButtons()
-    setTimeout(roundReset, 2200)
+    setTimeout(roundReset, 8000)
 }
 
 function win(){
@@ -366,14 +366,12 @@ function loss(){
     console.log(totalCash)
     messageEl.innerHTML = "Loss!"
     hideButtons()
-    setTimeout(roundReset, 2200)
+    setTimeout(roundReset, 8000)
 }
 
 function roundReset(){ //*ADD Message render
-    dealerAceCount = 0;
-    playerAceCount = 0;
-    playerAce = false;
-    dealerAce = false;
+    aceCount = 0;
+    aceCalc = false;
     dealerHand.innerHTML = ""
     playerHand.innerHTML = ""
     playerHand.appendChild(playerCard1)
