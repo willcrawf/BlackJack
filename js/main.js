@@ -212,35 +212,32 @@ function hitChecker(){
 // }
 
 
-
+let dealerAceCount = 0;
+let playerAceCount = 0;
 
 function getTotals() {
-
+    let hasAce = false;
     playerScore = 0;
     dealerScore = 0;
-    // This will eventually need to account for A being 1/11
     for (let i=0; i < dealer.cardsSelected.length; i++) {
-        dealerScore += cardLookup(`${dealer.cardsSelected[i]}`)
-        if (cardLookup(`${dealer.cardsSelected[i]}`) === 11) {
-            dealerAce = true
-        }
-        while (dealerAce === true) {
-            if (dealerScore > 21) {
-                dealerScore -= 10
+            dealerScore += cardLookup(`${dealer.cardsSelected[i]}`)
+            if (cardLookup(`${dealer.cardsSelected[i]}`) === 11){
+                dealerAceCount += 1;
             }
-        }
+            if (dealerAceCount > 0 && dealerScore > 10){
+                dealerScore -= 10;
+            } 
     }
+      
     for (let i=0; i < player.cardsSelected.length; i++) {
-        playerScore += cardLookup(`${player.cardsSelected[i]}`)
-        if (cardLookup(`${player.cardsSelected[i]}`) === 11) {
-            playerAce = true
-        }
-        while (playerAce === true && checkResults === false) {
-            if (playerScore > 21) {
-                dealerScore -= 10
+            playerScore += cardLookup(`${player.cardsSelected[i]}`)
+            if (cardLookup(`${player.cardsSelected[i]}`) === 11){
+                playerAceCount += 1;
+            }
+            if (playerAceCount > 0 && playerScore > 10){
+                playerScore -= 10;
             }
         }
-    }
     scoreRender();
 }
 
@@ -392,8 +389,8 @@ function loss(){
 }
 
 function roundReset(){ //*ADD Message render
-    let playerAce = false;
-    let dealerAce = false;
+    playerAce = false;
+    dealerAce = false;
     dealerHand.innerHTML = ""
     playerHand.innerHTML = ""
     playerHand.appendChild(playerCard1)
