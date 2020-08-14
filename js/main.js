@@ -1,5 +1,4 @@
 //*Constant Variables
-
 let maxScore = 21;
 let deck2, deck3, deck4; //8 Decks
 let hit = false;
@@ -14,8 +13,6 @@ let ifDoubleDown = false;
 let playerCardAmount = 0;
 const deck1 = ["dA","dQ","dK","dJ","d10","d09","d08","d07","d06","d05","d04","d03","d02","hA","hQ","hK","hJ","h10","h09","h08","h07","h06","h05","h04","h03","h02","cA","cQ","cK","cJ","c10","c09","c08","c07","c06","c05","c04","c03","c02","sA","sQ","sK","sJ","s10","s09","s08","s07","s06","s05","s04","s03","s02"];
 let dealerCardAmount = 0;
-
-
 
 //Initialization:
 init();
@@ -146,7 +143,7 @@ betCheck();
     }
 
 
-function cardRender(){ //*NEEDS PLAYER CARD RENDERING
+function cardRender(){ 
     if (player.turnNumber === 0){
     dealerCard1.className = `card large ${dealer.cardPicked}`
     dealerCard2.className = "card large back-red shadow"
@@ -200,8 +197,6 @@ function hitChecker(){
     hit = true;
     checkResults();
 }
-
-
 
 function getTotals() {
     playerScore = 0;
@@ -311,7 +306,6 @@ if (player.turnNumber === 0){
 }
 //MAKE Hit and standing in proper order
 function checkResults(){
-
     if (stand === true){
         if (dealerScore > playerScore && dealerScore < 21){
             loss(); 
@@ -443,29 +437,3 @@ function showButtons(){
     standBtn.style.display = "block";
     doubleDownBtn.style.display = "block";
 }
-
-
-//Add margin between leadboard and reset button
-
-
-//Card deck
-//Double down stuff
-//Make push, hit, and stand, splitting, insurance, doubling down and deal buttons
-//Bust logic
-
-
-//hitting: add another card to your total
-//standing: you're happy with your total, no new cards 
-
-//doubling down: only available for your first two cards or when you split
-    //it places equal bet to original bet. you can't hit after doubling.
-
-    //splitting: when two cards are of equal value, then you can place another equal bet out
-    //pair of aces can only get one hit, basically adds another hand
-
-    //Insurance: If dealer has an ace, you can add half your bet as insurance.
-    //Insurance pays 2 to 1 so you break even.
-
-
-
-//Card values: 2-10 are of face value. Face cards = 10, Ace = 1 or 11
