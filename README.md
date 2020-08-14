@@ -1,6 +1,6 @@
 # *BlackJack*
 ## Website:
-[altText](http://bestblackjack.surge.sh/)
+[Website Here](http://bestblackjack.surge.sh/)
 ##### By Will Crawford
 
 ### Wireframe:
