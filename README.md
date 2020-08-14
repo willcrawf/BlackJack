@@ -23,7 +23,7 @@
 A full list of instructions are listed under the "nav bar" on the Blackjack website.
 
 ### Future Steps for the Game:
-* Reset button working
+* ~~Reset button working~~
 * Some ace logic needs ot be fixed
 * Double down working
 * Splitting
